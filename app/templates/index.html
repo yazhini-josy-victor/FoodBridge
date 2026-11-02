@@ -4,85 +4,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodBridge | Smart Food Donation</title>
+    <title>FoodBridge | Share Food, Spread Hope</title>
+
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
             font-family: Arial, sans-serif;
-            background: #f4f7f4;
-            color: #20352b;
+            background: #fffaf0;
+            color: #193b2c;
         }
 
         header {
-            background: #176b45;
+            background: #075735;
             color: white;
-            padding: 22px 8%;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        header h1 {
-            margin: 0;
+        .brand h1 {
+            font-size: 30px;
         }
 
-        main {
-            max-width: 850px;
-            margin: 70px auto;
-            padding: 32px;
-            text-align: center;
+        .brand p {
+            font-size: 12px;
+            margin-top: 5px;
         }
 
-        .welcome {
-            background: white;
-            padding: 45px 25px;
-            border-radius: 16px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+        nav {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        .welcome h2 {
-            color: #176b45;
-            font-size: 32px;
-        }
-
-        .welcome p {
-            line-height: 1.7;
-        }
-
-        .status {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 10px 16px;
-            background: #e0f4e8;
-            color: #176b45;
-            border-radius: 24px;
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 11px 20px;
+            border: 1px solid white;
+            border-radius: 30px;
             font-weight: bold;
         }
 
-        footer {
+        nav a:hover {
+            background: #a8d64e;
+            color: #12442d;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 35px;
+            padding: 65px 7%;
+            background: linear-gradient(120deg, #fffdf4, #f4f8df);
+        }
+
+        .hero h2 {
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1.15;
+            margin-bottom: 22px;
+        }
+
+        .hero h2 span {
+            color: #e98b13;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #405448;
+        }
+
+        .slogan {
+            margin-top: 22px;
+            color: #087447 !important;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 23px;
+            border-radius: 30px;
+            background: #087447;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #064d31;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #087447;
+            border: 2px solid #087447;
+        }
+
+        .btn-outline:hover {
+            background: #e8f4e8;
+            color: #064d31;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 390px;
+            object-fit: cover;
+            border-radius: 25px;
+            box-shadow: 0 12px 30px #00000020;
+        }
+
+        .features {
+            padding: 55px 6%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 27px 20px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px #00000010;
+            border-bottom: 4px solid #168653;
+        }
+
+        .feature-card:nth-child(even) {
+            border-bottom-color: #f4a51c;
+        }
+
+        .feature-icon {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 12px;
+            font-size: 19px;
+        }
+
+        .feature-card p {
+            line-height: 1.6;
+            color: #5c6b61;
+        }
+
+        .message {
             text-align: center;
-            padding: 24px;
-            color: #617267;
+            background: #e8f3df;
+            padding: 45px 20px;
+        }
+
+        .message h2 {
+            color: #075735;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        footer {
+            background: #075735;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-image {
+                height: 320px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 40px 6%;
+            }
         }
     </style>
 </head>
+
 <body>
-    <header>
-        <h1>FoodBridge</h1>
+
+<header>
+    <div class="brand">
+        <h1>💚 FoodBridge</h1>
         <p>Smart Food Donation and Recipient Matching Expert System</p>
-    </header>
+    </div>
 
-    <main>
-        <section class="welcome">
-            <h2>Connecting Surplus Food with Community Needs</h2>
-            <p>
-                A rule-based expert system designed to help donors and
-                recipient organizations redistribute suitable surplus food
-                through transparent matching and allocation.
-            </p>
-            <div class="status">Website setup in progress</div>
-        </section>
-    </main>
+    <nav>
+        <a href="{{ url_for('main.home') }}">⌂ Home</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+    </nav>
+</header>
 
-    <footer>
-        FoodBridge · Smart Food Redistribution
-    </footer>
+<section class="hero">
+
+    <div>
+        <h2>
+            Connecting <span>Surplus Food</span>
+            with Community Needs
+        </h2>
+
+        <p>
+            A rule-based expert system designed to help food donors
+            and recipient organizations redistribute suitable surplus
+            food through transparent matching and allocation.
+        </p>
+
+        <p class="slogan">
+            Reduce Food Waste • Support Communities • Build a Kinder Society
+        </p>
+
+        <div class="actions">
+            <a href="{{ url_for('auth.register') }}" class="btn">
+                Get Started - Register
+            </a>
+
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline">
+                Already Registered? Login
+            </a>
+        </div>
+    </div>
+
+    <div>
+        <img
+            class="hero-image"
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1000&auto=format&fit=crop&q=85"
+            alt="Fresh food and vegetables available for donation">
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="feature-card">
+        <div class="feature-icon">🍱</div>
+        <h3>Donate Food</h3>
+        <p>
+            Contribute surplus meals, snacks, fruits and packaged
+            food from homes, businesses and events.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <h3>Find Recipients</h3>
+        <p>
+            Connect surplus food with NGOs, orphanages,
+            shelters and institutions in need.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Safe & Transparent</h3>
+        <p>
+            Apply food-safety eligibility rules and maintain
+            transparent donation and allocation tracking.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">❤️</div>
+        <h3>Make an Impact</h3>
+        <p>
+            Reduce food waste, support communities and
+            help fight hunger.
+        </p>
+    </div>
+
+</section>
+
+<section class="message">
+    <h2>Together for a Food Secure Community 🌱</h2>
+    <p>Every donation can make a difference.</p>
+</section>
+
+<footer>
+    FoodBridge © 2026 | Smart Food Redistribution
+</footer>
+
 </body>
 </html>

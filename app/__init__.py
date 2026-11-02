@@ -13,8 +13,8 @@ csrf = CSRFProtect()
 
 @login_manager.user_loader
 def load_user(user_id):
-    # Temporary placeholder until the User database model is created.
-    return None
+    from app.models.user import User
+    return db.session.get(User, int(user_id))
 
 
 def create_app(test_config=None):
@@ -45,7 +45,9 @@ def create_app(test_config=None):
     login_manager.login_view = "main.home"
     login_manager.login_message_category = "info"
 
-    from app.routes import main
+    from app.routes import main, auth
+
     app.register_blueprint(main.bp)
+    app.register_blueprint(auth.bp)
 
     return app

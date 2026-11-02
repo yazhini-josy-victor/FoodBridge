@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | FoodBridge</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f7f2;
+            color: #24352a;
+        }
+        header {
+            background: #176b45;
+            color: white;
+            padding: 20px 8%;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        main {
+            max-width: 650px;
+            margin: 35px auto;
+            padding: 28px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+        h1 { margin-top: 0; }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, select {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin-top: 6px;
+            border: 1px solid #cbd5ce;
+            border-radius: 6px;
+        }
+        button {
+            margin-top: 22px;
+            padding: 12px 20px;
+            width: 100%;
+            border: 0;
+            border-radius: 6px;
+            background: #176b45;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .flash {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            background: #fff3cd;
+        }
+        .hint { color: #5d6c62; font-size: 13px; }
+        .hidden { display: none; }
+        .section-title {
+            margin-top: 28px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dce5de;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('main.home') }}"><strong>FoodBridge</strong></a>
+    </header>
+
+    <main>
+        <h1>Create your account</h1>
+        <p>Join FoodBridge to redistribute surplus food safely.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" maxlength="120"
+                   autocomplete="name" required>
+
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" maxlength="255"
+                   autocomplete="email" required>
+
+            <label for="role">Account type</label>
+            <select id="role" name="role" required>
+                <option value="">Select account type</option>
+                <option value="donor">Food Donor</option>
+                <option value="recipient">NGO / Recipient Institution</option>
+            </select>
+
+            <section id="institution-fields" class="hidden">
+                <h2 class="section-title">Institution details</h2>
+
+                <label for="institution_name">Institution name</label>
+                <input id="institution_name" name="institution_name"
+                       maxlength="180">
+
+                <label for="institution_type">Institution type</label>
+                <select id="institution_type" name="institution_type">
+                    <option value="">Select institution type</option>
+                    <option value="old_age_home">Old-age home</option>
+                    <option value="orphanage">Orphanage</option>
+                    <option value="hospital">Hospital</option>
+                    <option value="shelter">Shelter</option>
+                    <option value="community_kitchen">Community kitchen</option>
+                    <option value="general_ngo">General NGO</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="address">Institution address</label>
+                <input id="address" name="address" maxlength="300">
+
+                <label for="maps_url">Google Maps link (optional)</label>
+                <input id="maps_url" name="maps_url" type="url"
+                       placeholder="https://maps.google.com/...">
+
+                <label for="contact_person">Contact person</label>
+                <input id="contact_person" name="contact_person"
+                       maxlength="120">
+
+                <label for="contact_number">Contact number</label>
+                <input id="contact_number" name="contact_number"
+                       type="tel" maxlength="30">
+            </section>
+
+            <h2 class="section-title">Security</h2>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+                   minlength="8" autocomplete="new-password" required>
+            <p class="hint">
+                Use at least 8 characters, including uppercase and lowercase
+                letters and a number.
+            </p>
+
+            <label for="confirm_password">Confirm password</label>
+            <input id="confirm_password" name="confirm_password"
+                   type="password" autocomplete="new-password" required>
+
+            <button type="submit">Create account</button>
+        </form>
+
+        <p>Already registered? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+    </main>
+
+    <script>
+        const roleSelect = document.getElementById("role");
+        const institutionFields = document.getElementById("institution-fields");
+        const institutionInputs = institutionFields.querySelectorAll(
+            "input, select"
+        );
+
+        function updateInstitutionFields() {
+            const isRecipient = roleSelect.value === "recipient";
+
+            institutionFields.classList.toggle("hidden", !isRecipient);
+
+            institutionInputs.forEach((field) => {
+                field.required = isRecipient && field.id !== "maps_url";
+            });
+        }
+
+        roleSelect.addEventListener("change", updateInstitutionFields);
+        updateInstitutionFields();
+    </script>
+</body>
+</html>

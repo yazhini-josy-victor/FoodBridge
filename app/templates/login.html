@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | FoodBridge</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f7f2;
+            color: #24352a;
+        }
+        header {
+            background: #176b45;
+            color: white;
+            padding: 20px 8%;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        main {
+            max-width: 440px;
+            margin: 55px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #cbd5ce;
+            border-radius: 6px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 24px;
+            border: 0;
+            border-radius: 6px;
+            background: #176b45;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .flash {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            background: #fff3cd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('main.home') }}"><strong>FoodBridge</strong></a>
+    </header>
+
+    <main>
+        <h1>Welcome back</h1>
+        <p>Log in to your FoodBridge account.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email"
+                   autocomplete="email" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+                   autocomplete="current-password" required>
+
+            <button type="submit">Log in</button>
+        </form>
+
+        <p>New to FoodBridge?
+            <a href="{{ url_for('auth.register') }}">Create an account</a>
+        </p>
+    </main>
+</body>
+</html>

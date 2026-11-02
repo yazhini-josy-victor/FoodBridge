@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard | FoodBridge</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f7f4;
+            color: #18352a;
+        }
+
+        header {
+            background: #075b3d;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .logout {
+            background: white;
+            color: #075b3d;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #0000000d;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: #08784d;
+            margin-top: 0;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 23px;
+            border-radius: 12px;
+            border-bottom: 4px solid #159b68;
+            box-shadow: 0 4px 15px #0000000d;
+        }
+
+        .card .emoji {
+            font-size: 30px;
+        }
+
+        .card h3 {
+            margin: 12px 0 8px;
+            color: #075b3d;
+        }
+
+        .card p {
+            color: #58665f;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            color: #718078;
+            padding: 30px 15px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 500px) {
+            header {
+                padding: 16px 5%;
+            }
+
+            .brand {
+                font-size: 19px;
+            }
+
+            main {
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="brand">💚 FoodBridge</div>
+        <div class="subtitle">NGO / Recipient Dashboard</div>
+    </div>
+
+    <form method="POST" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="logout" type="submit">Logout</button>
+    </form>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <h2>Welcome, {{ current_user.full_name }}! 👋</h2>
+
+        <p>
+            Thank you for helping us connect surplus food
+            with people who need it.
+        </p>
+
+        {% if current_user.institution %}
+            <p>
+                <strong>Institution:</strong>
+                {{ current_user.institution.name }}
+            </p>
+            <p>
+                <strong>Institution type:</strong>
+                {{ current_user.institution.institution_type.replace('_', ' ').title() }}
+            </p>
+        {% endif %}
+
+        <p><strong>Account type:</strong> NGO / Food Recipient</p>
+    </section>
+
+    <section class="dashboard-grid">
+
+        <div class="card">
+            <div class="emoji">🍱</div>
+            <h3>Browse Donations</h3>
+            <p>
+                Explore available food donations from donors
+                and find suitable meals for your beneficiaries.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="emoji">📝</div>
+            <h3>Submit Food Request</h3>
+            <p>
+                Tell us your institution's food requirements
+                and receive suitable recommendations.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="emoji">📋</div>
+            <h3>My Requests</h3>
+            <p>
+                View and manage the food requests
+                submitted by your institution.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="emoji">🤝</div>
+            <h3>My Claims</h3>
+            <p>
+                Track donations claimed by your institution
+                and their allocation status.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="emoji">🚚</div>
+            <h3>Pickup Tracking</h3>
+            <p>
+                Monitor pickup arrangements and
+                food collection status.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="emoji">🏢</div>
+            <h3>Institution Profile</h3>
+            <p>
+                View your institution's registration
+                and contact information.
+            </p>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    FoodBridge — Together for a Food Secure Community 💚
+</footer>
+
+</body>
+</html>
