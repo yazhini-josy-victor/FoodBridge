@@ -9,7 +9,10 @@ class Donation(db.Model):
     __tablename__ = "donations"
 
     __table_args__ = (
-        CheckConstraint("quantity > 0", name="ck_donation_quantity_positive"),
+        CheckConstraint(
+            "quantity > 0",
+            name="ck_donation_quantity_positive",
+        ),
         CheckConstraint(
             "estimated_servings > 0",
             name="ck_donation_servings_positive",
@@ -18,11 +21,15 @@ class Donation(db.Model):
             "minimum_pickup_quantity > 0",
             name="ck_donation_minimum_quantity_positive",
         ),
+        CheckConstraint(
+            "minimum_pickup_quantity <= quantity",
+            name="ck_donation_minimum_not_above_quantity",
+        ),
     )
 
     id = db.Column(db.Integer, primary_key=True)
 
-    # Donor who created this donation
+    # Donor
     donor_id = db.Column(
         db.Integer,
         db.ForeignKey("users.id"),
@@ -35,22 +42,30 @@ class Donation(db.Model):
     description = db.Column(db.Text, nullable=True)
     food_category = db.Column(db.String(20), nullable=False)
     food_type = db.Column(db.String(40), nullable=False)
+    packaging_type = db.Column(db.String(50), nullable=True)
+    food_source = db.Column(db.String(50), nullable=True)
 
-    # Quantity details
+    # Quantity
     quantity = db.Column(Numeric(10, 2), nullable=False)
     quantity_unit = db.Column(db.String(30), nullable=False)
     estimated_servings = db.Column(db.Integer, nullable=False)
 
-    # Food safety details
+    # Food safety
     prepared_at = db.Column(db.DateTime(timezone=True), nullable=True)
     expires_at = db.Column(db.DateTime(timezone=True), nullable=False)
     pickup_deadline = db.Column(db.DateTime(timezone=True), nullable=False)
+    available_from = db.Column(db.DateTime(timezone=True), nullable=True)
 
     storage_instructions = db.Column(db.Text, nullable=True)
     allergens = db.Column(db.JSON, nullable=False, default=list)
+    allergen_information_confirmed = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+    )
     dietary_information = db.Column(db.Text, nullable=True)
 
-    # Partial allocation settings
+    # Partial allocation
     allow_partial = db.Column(db.Boolean, nullable=False, default=False)
     minimum_pickup_quantity = db.Column(
         Numeric(10, 2),
@@ -62,6 +77,17 @@ class Donation(db.Model):
     pickup_address = db.Column(db.String(300), nullable=False)
     maps_url = db.Column(db.String(1000), nullable=True)
     delivery_available = db.Column(db.Boolean, nullable=False, default=False)
+    pickup_instructions = db.Column(db.Text, nullable=True)
+
+    # Donation-specific contact details
+    contact_name = db.Column(db.String(120), nullable=True)
+    contact_number = db.Column(db.String(30), nullable=True)
+
+    # Photograph filename (the actual image is stored separately)
+    image_filename = db.Column(db.String(255), nullable=True)
+
+    # Optional estimated value
+    estimated_value = db.Column(Numeric(10, 2), nullable=True)
 
     # Donation lifecycle
     status = db.Column(
